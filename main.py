@@ -1,4 +1,4 @@
-from card_segment import * 
+from card_segment import *
 from segment_digit import *
 import argparse
 import pytesseract
@@ -30,12 +30,15 @@ def main():
 
     images = []
     if not image_input:
-        images = document_reader("test.pdf", image_saving)
+        if image_saving:
+            images = document_reader("test.pdf", image_saving)
     else:
         for i in os.listdir('OutputImages'):
             image_path = os.path.join('OutputImages/', i)
             img = Image.open(image_path)
             images.append(img)
+
+    upper_left, height, width = optics_segment("test1.jpg")
 
 if __name__ == "__main__":
     main()
