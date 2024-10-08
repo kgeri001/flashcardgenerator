@@ -1,5 +1,5 @@
 # import module
-from pdf2image import convert_from_path
+# from pdf2image import convert_from_path
 import os
 
 def document_reader(input_path, save_images):
