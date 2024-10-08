@@ -56,6 +56,7 @@ def initial_segment(image_path, k = 3):
             width.append(w)
         else:
             image[y:y + h, x:x + w] = 255
+            unblur[y:y + h, x:x + w] = 0
 
 
     clusters = cluster_bounding_boxes_kmeans(upper_left, k)
