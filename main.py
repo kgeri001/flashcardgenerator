@@ -38,7 +38,7 @@ def main():
             img = Image.open(image_path)
             images.append(img)
 
-    upper_left, height, width = optics_segment("test1.jpg")
+    optics_segment("test1.jpg")
 
 if __name__ == "__main__":
     main()
