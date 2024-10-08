@@ -1,6 +1,7 @@
 *.pdf
 *.jpg
 OutputImages
+__pycache__
 *.pyc
 detector
 *.png
