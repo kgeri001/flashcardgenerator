@@ -1,102 +1,68 @@
 import easyocr
-# from doctr.models import ocr_predictor
 import os
-# import keras_ocr
 import cv2
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 
-def easyorc_reader(images_path):
-    print("easyorc reader")
+class Own_dictionary:
+    def __init__(self, english_word, hungarian_word, description, box_point):
+        self.english_word = english_word
+        self.hungarian_word = hungarian_word
+        self.description = description
+        self.box_point = box_point
+
+    def to_dict(self):
+        # Convert the node structure to a dictionary for JSON conversion
+        return {
+            "english_word": self.english_word,  
+            "hungarian_word": self.hungarian_word,
+            "description": self.description
+        }
+
+
+def easyocr_reader(image_1):
+    #print("easyocr reader")
     # Create an OCR reader object
     reader = easyocr.Reader(['en','hu'])
 
-    img = cv2.imread('OutputImages/page24.jpg')
-
-    # Read text from an image
-    result = reader.readtext('OutputImages/page24.jpg', paragraph=True, x_ths=0, width_ths=0, y_ths=0, height_ths=0.0)
-    results = {}
-    # Print the extracted text
-
-    enlish_world_was_previous = False
-    hungarian_world_was_previous = False
-    describtion = False
-    describtion_end = False
-
+    result = reader.readtext(image_1)#, paragraph=True, x_ths=0, width_ths=0, y_ths=0, height_ths=0.0)
     temp = ""
+    results = []
+    first = True
+    temp_box = []
     for detection in result:
-        print(detection[1])
-        # if '[' in detection[1]:
-        #     print(f"English word: {detection[1]}")
-        #     enlish_world_was_previous = True
-        #     temp = ""
-        # else:
-        #     if enlish_world_was_previous:
-        #         print(f"Hungarian word: {detection[1]}")
-        #         enlish_world_was_previous = False
-        #         hungarian_world_was_previous = True
-        #     else:
-        #         if detection[1][0].isupper():
-        #             if '.' in detection[1] or ':' in detection[1] or '?' in detection[1] or '!' in detection[1]:
-        #                 temp += ' ' + detection[1]
-        #                 print(temp)
-        #                 temp=""
-        #             else:
-        #                 temp += detection[1]
-        #         elif '.' in detection[1] or ':' in detection[1] or '?' in detection[1] or '!' in detection[1]:
-        #                 temp += ' ' + detection[1]
-        #                 print(temp)
-        #                 temp=""
+        #print(detection[1])
+        bbox, text, confidance = detection
+        temp += text
+        if detection[1][-1].isnumeric():
+            word_end = -1
+            for i, char in enumerate(temp):
+                if not char.isalpha() and word_end == -1:
+                    word_end = i
+            if first:
+                results.append(Own_dictionary(english_word=temp[0:word_end], box_point=bbox, hungarian_word="", description=""))
+            else:
+                results.append(Own_dictionary(english_word=temp[0:word_end], box_point=temp_box, hungarian_word="", description=""))
+                temp_box = []
+            temp = ""
+            first = True
+        else:
+            first = False
+            if len(temp_box) == 0:
+                temp_box = bbox
 
-    # for img in os.listdir(images_path):
-    #     results.append(reader.readtext('OutputImages/' + img))
-    # print("\n\n" + "-"*30)
-    # result2 = reader.readtext('OutputImages/page24.jpg', paragraph=False)
-    # # Print the extracted text
-    # for detection in result2:
-    #     print(detection[1])
+    #for item in results:
+        #print(item.english_word, item.box_point)
 
+    # for detection in result:
+    #     bbox, text, confidance = detection
+         #print(bbox, confidance)
 
-
-def doctr_reader(images_path):
-    print("doctr reader")
-    # Load an image
-    image_path = 'OutputImages/page24.jpg'
-
-    # Create an OCR predictor
-    predictor = ocr_predictor.create_predictor()
-
-    # Perform OCR on the image
-    result = predictor(image_path)
-
-    # Print the extracted text
-    print(result)
-
-    
-    for img in os.listdir(images_path):
-        print(img)
-
-def keras_orc_predict():
-    import keras_ocr
-    import matplotlib.pyplot as plt
-
-    # Create a pipeline for OCR
-    pipeline = keras_ocr.pipeline.Pipeline()
-
-    # Load the image
-    image = keras_ocr.tools.read('OutputImages/page24.jpg')
-
-    # Perform OCR
-    prediction_groups = pipeline.recognize([image])
-
-    # Display results
-    for predictions in prediction_groups:
-        for text, box in predictions:
-            print(f'Detected text: {text}')
-            # Draw bounding box
-            #keras_ocr.tools.drawBoxes(image, [box], color='red')
-
-    # Show the image with detected text
-    plt.imshow(image)
-    plt.axis('off')
-    plt.show()
+    # for item in results:
+    #     bbox = item.box_point
+    #     cv2.rectangle(image_1, (bbox[0]), (bbox[2]), (255, 255, 255), 2)
+        
+    # plt.figure(figsize=(15, 5))
+    # plt.imshow(cv2.cvtColor(image_1, cv2.COLOR_BGR2RGB))
+    #plt.show()
+    return results

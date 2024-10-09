@@ -37,7 +37,7 @@ def preprocessing(image):
 
 def initial_segment(image_path, k = 3):
     # Load the image
-    print("Starting image processing")
+    #print("Starting image processing")
     image = cv2.imread(image_path)
     dilate,unblur = preprocessing(image)
 
@@ -94,22 +94,22 @@ def initial_segment(image_path, k = 3):
     image_3 = unblur[:, cluster_boxes[2][0]:]
 
     # Display the result (optional, for visualization)
-    plt.figure(figsize=(15, 5))
-    plt.subplot(1, 3, 1)
-    plt.imshow(cv2.cvtColor(image_1, cv2.COLOR_BGR2RGB))
-    plt.title('Segment 1')
-    plt.axis('off')
+    # plt.figure(figsize=(15, 5))
+    # plt.subplot(1, 3, 1)
+    # plt.imshow(cv2.cvtColor(image_1, cv2.COLOR_BGR2RGB))
+    # plt.title('Segment 1')
+    # plt.axis('off')
 
-    plt.subplot(1, 3, 2)
-    plt.imshow(cv2.cvtColor(image_2, cv2.COLOR_BGR2RGB))
-    plt.title('Segment 2')
-    plt.axis('off')
+    # plt.subplot(1, 3, 2)
+    # plt.imshow(cv2.cvtColor(image_2, cv2.COLOR_BGR2RGB))
+    # plt.title('Segment 2')
+    # plt.axis('off')
 
-    plt.subplot(1, 3, 3)
-    plt.imshow(cv2.cvtColor(image_3, cv2.COLOR_BGR2RGB))
-    plt.title('Segment 3')
-    plt.axis('off')
-    plt.show()
+    # plt.subplot(1, 3, 3)
+    # plt.imshow(cv2.cvtColor(image_3, cv2.COLOR_BGR2RGB))
+    # plt.title('Segment 3')
+    # plt.axis('off')
+    #plt.show()
 
     return image_1, image_2, image_3
 

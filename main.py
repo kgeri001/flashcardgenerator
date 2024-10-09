@@ -2,8 +2,6 @@ from card_segment import *
 from segment_digit import *
 import argparse
 from PIL import Image
-import re
-import cv2
 
 def parser():
     # Create the argument parser
@@ -36,17 +34,16 @@ def main():
             img = Image.open(image_path)
             images.append(img)
 
-    image_1, image_2, image_3 = initial_segment("test1.jpg")
+
+    # image_1, image_2, image_3 = initial_segment("OutputImages/page24.jpg")
 
 
-    easyorc_reader('OutputImages')
+    # easyocr_reader('OutputImages', image_1)
 
-    #doctr_reader('OutputImages')
-
-    #keras_predict()
-
-    #keras_orc_predict()
-
+    english_words = []
+    for image in os.listdir("OutputImages"):
+        image_1, image_2, image_3 = initial_segment(os.path.join(os.getcwd(),'OutputImages',image))
+        english_words.append(easyocr_reader(image_1))
 
 if __name__ == "__main__":
     main()
