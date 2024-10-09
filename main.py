@@ -1,7 +1,7 @@
 from card_segment import * 
 from segment_digit import *
 import argparse
-# from PIL import Image
+from PIL import Image
 import re
 import cv2
 
@@ -10,10 +10,10 @@ def parser():
     parser = argparse.ArgumentParser(description="Process Image_saving argument.")
 
     # Add the argument for Image_saving
-    parser.add_argument('--Image_saving', type=lambda x: (str(x).lower() == 'true'), 
+    parser.add_argument('--pdf_read', type=lambda x: (str(x).lower() == 'true'), 
                         help="A flag to enable or disable image saving", 
                         default=False)
-    parser.add_argument('--Read_From_Images', type=lambda x: (str(x).lower() == 'true'), 
+    parser.add_argument('--img_read', type=lambda x: (str(x).lower() == 'true'), 
                         help="A flag to enable or disable using images as an input", 
                         default=False)
 
@@ -22,16 +22,15 @@ def parser():
     return args
 
 def main():
-
     # Access the Image_saving value
     args = parser()
-    image_saving = args.Image_saving
-    image_input = args.Read_From_Images
-
+    pdf_read = args.pdf_read
+    img_read = args.img_read
     images = []
-    if not image_input:
-        images = document_reader("test.pdf", image_saving)
-    else:
+
+    if pdf_read:
+        images = document_reader("test.pdf")
+    elif img_read:
         for i in os.listdir('OutputImages'):
             image_path = os.path.join('OutputImages/', i)
             img = Image.open(image_path)
