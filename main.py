@@ -1,4 +1,4 @@
-from card_segment import * 
+from card_segment import *
 from segment_digit import *
 import argparse
 from PIL import Image
@@ -36,6 +36,8 @@ def main():
             img = Image.open(image_path)
             images.append(img)
 
+    image_1, image_2, image_3 = initial_segment("test1.jpg")
+
 
     easyorc_reader('OutputImages')
 
@@ -44,7 +46,6 @@ def main():
     #keras_predict()
 
     #keras_orc_predict()
-
 
 
 if __name__ == "__main__":
