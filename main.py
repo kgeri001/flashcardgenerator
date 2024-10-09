@@ -1,9 +1,9 @@
 from card_segment import *
 from segment_digit import *
 import argparse
-import pytesseract
-from PIL import Image
+# from PIL import Image
 import re
+import cv2
 
 def parser():
     # Create the argument parser
@@ -39,6 +39,16 @@ def main():
             images.append(img)
 
     image_1, image_2, image_3 = initial_segment("test1.jpg")
+
+
+    easyorc_reader('OutputImages')
+
+    #doctr_reader('OutputImages')
+
+    #keras_predict()
+
+    #keras_orc_predict()
+
 
 if __name__ == "__main__":
     main()
